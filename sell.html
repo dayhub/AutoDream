@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Car - AutoMarket</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+
+        .auth-buttons button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+            margin-left: 10px;
+        }
+
+        .auth-buttons button:hover {
+            background: #2980b9;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1563720223485-41b7d8c2c13c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 3rem 0;
+        }
+
+        /* Sell Form Container */
+        .sell-form-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #eee;
+            z-index: 1;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: var(--secondary);
+            z-index: 2;
+            transition: width 0.5s ease;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .step-number {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s;
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .progress-step.active .step-number {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .progress-step.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+
+        /* Form Steps */
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .step-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            text-align: center;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary);
+            outline: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Photo Upload */
+        .photo-upload-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .photo-upload {
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border 0.3s;
+            margin-bottom: 1rem;
+        }
+
+        .photo-upload:hover {
+            border-color: var(--secondary);
+        }
+
+        .photo-upload i {
+            font-size: 3rem;
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+
+        .photo-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .preview-item {
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+            height: 120px;
+        }
+
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .remove-photo {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(231, 76, 60, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        /* Features Selection */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .feature-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .feature-checkbox input {
+            margin-right: 0.5rem;
+        }
+
+        /* Form Navigation */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .btn-secondary:hover {
+            background: #dde4e6;
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background: #c0392b;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .preview-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .preview-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .preview-image {
+            height: 200px;
+            background: #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .preview-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-details h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .preview-details .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .preview-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .preview-specs div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .preview-specs i {
+            color: var(--secondary);
+        }
+
+        /* Success Message */
+        .success-message {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: var(--success);
+            margin-bottom: 1rem;
+        }
+
+        .success-message h2 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .success-message p {
+            margin-bottom: 2rem;
+            color: #7f8c8d;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            nav ul {
+                margin: 1rem 0;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .preview-content {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-car"></i>
+                    Auto<span>Market</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="browse.html">Browse Cars</a></li>
+                        <li><a href="sell.html" class="active">Sell Your Car</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <div class="user-menu">
+                        <button onclick="window.location.href='login.html'">Login</button>
+                        <button onclick="window.location.href='register.html'">Register</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Sell Your Car with AutoMarket</h1>
+            <p>Reach thousands of potential buyers and get the best price for your vehicle</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <div class="sell-form-container">
+            <!-- Progress Bar -->
+            <div class="progress-bar" id="progressBar">
+                <div class="progress-step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Car Details</div>
+                </div>
+                <div class="progress-step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Photos</div>
+                </div>
+                <div class="progress-step" id="step3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Features</div>
+                </div>
+                <div class="progress-step" id="step4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Contact Info</div>
+                </div>
+                <div class="progress-step" id="step5">
+                    <div class="step-number">5</div>
+                    <div class="step-label">Preview</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Car Details -->
+            <div class="form-step active" id="formStep1">
+                <h2 class="step-title">Car Details</h2>
+                <form id="carDetailsForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carMake">Make *</label>
+                            <select id="carMake" class="form-control" required>
+                                <option value="">Select Make</option>
+                                <option value="Toyota">Toyota</option>
+                                <option value="Honda">Honda</option>
+                                <option value="Ford">Ford</option>
+                                <option value="BMW">BMW</option>
+                                <option value="Audi">Audi</option>
+                                <option value="Mercedes">Mercedes</option>
+                                <option value="Tesla">Tesla</option>
+                                <option value="Nissan">Nissan</option>
+                                <option value="Hyundai">Hyundai</option>
+                                <option value="Kia">Kia</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="carModel">Model *</label>
+                            <input type="text" id="carModel" class="form-control" placeholder="e.g., Camry" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carYear">Year *</label>
+                            <select id="carYear" class="form-control" required>
+                                <option value="">Select Year</option>
+                                <!-- Years will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="carPrice">Price ($) *</label>
+                            <input type="number" id="carPrice" class="form-control" placeholder="e.g., 25000" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carMileage">Mileage *</label>
+                            <input type="number" id="carMileage" class="form-control" placeholder="e.g., 45000" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="carFuel">Fuel Type *</label>
+                            <select id="carFuel" class="form-control" required>
+                                <option value="">Select Fuel Type</option>
+                                <option value="Gasoline">Gasoline</option>
+                                <option value="Diesel">Diesel</option>
+                                <option value="Electric">Electric</option>
+                                <option value="Hybrid">Hybrid</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="carTransmission">Transmission *</label>
+                            <select id="carTransmission" class="form-control" required>
+                                <option value="">Select Transmission</option>
+                                <option value="Automatic">Automatic</option>
+                                <option value="Manual">Manual</option>
+                                <option value="CVT">CVT</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="carColor">Color *</label>
+                            <input type="text" id="carColor" class="form-control" placeholder="e.g., Blue" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="carDescription">Description *</label>
+                        <textarea id="carDescription" class="form-control" placeholder="Describe your car, its condition, features, and any additional information that might interest buyers..." required></textarea>
+                    </div>
+                    <div class="form-navigation">
+                        <div></div> <!-- Empty div for spacing -->
+                        <button type="button" class="btn btn-primary" id="nextToStep2">Next <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Step 2: Photos -->
+            <div class="form-step" id="formStep2">
+                <h2 class="step-title">Car Photos</h2>
+                <p>Upload high-quality photos of your car. Clear photos help attract more buyers.</p>
+                
+                <div class="photo-upload-container">
+                    <div class="photo-upload" id="photoUploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload photos or drag and drop</p>
+                        <p class="small">Recommended: At least 5 photos (exterior, interior, engine)</p>
+                        <input type="file" id="carPhotos" multiple accept="image/*" style="display: none;">
+                    </div>
+                    <div class="photo-preview" id="photoPreview">
+                        <!-- Photo previews will be added here -->
+                    </div>
+                </div>
+
+                <div class="form-navigation">
+                    <button type="button" class="btn btn-secondary" id="backToStep1"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button type="button" class="btn btn-primary" id="nextToStep3">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 3: Features -->
+            <div class="form-step" id="formStep3">
+                <h2 class="step-title">Car Features</h2>
+                <p>Select the features that your car has. This helps buyers find exactly what they're looking for.</p>
+                
+                <div class="features-grid">
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-ac" value="Air Conditioning">
+                        <label for="feature-ac">Air Conditioning</label>
+                    </div>
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-heated-seats" value="Heated Seats">
+                        <label for="feature-heated-seats">Heated Seats</label>
+                    </div>
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-leather" value="Leather Seats">
+                        <label for="feature-leather">Leather Seats</label>
+                    </div>
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-sunroof" value="Sunroof/Moonroof">
+                        <label for="feature-sunroof">Sunroof/Moonroof</label>
+                    </div>
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-nav" value="Navigation System">
+                        <label for="feature-nav">Navigation System</label>
+                    </div>
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-backup-camera" value="Backup Camera">
+                        <label for="feature-backup-camera">Backup Camera</label>
+                    </div>
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-bluetooth" value="Bluetooth">
+                        <label for="feature-bluetooth">Bluetooth</label>
+                    </div>
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-apple-carplay" value="Apple CarPlay">
+                        <label for="feature-apple-carplay">Apple CarPlay</label>
+                    </div>
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-android-auto" value="Android Auto">
+                        <label for="feature-android-auto">Android Auto</label>
+                    </div>
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-cruise-control" value="Cruise Control">
+                        <label for="feature-cruise-control">Cruise Control</label>
+                    </div>
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-keyless" value="Keyless Entry">
+                        <label for="feature-keyless">Keyless Entry</label>
+                    </div>
+                    <div class="feature-checkbox">
+                        <input type="checkbox" id="feature-push-start" value="Push Button Start">
+                        <label for="feature-push-start">Push Button Start</label>
+                    </div>
+                </div>
+
+                <div class="form-navigation">
+                    <button type="button" class="btn btn-secondary" id="backToStep2"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button type="button" class="btn btn-primary" id="nextToStep4">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 4: Contact Information -->
+            <div class="form-step" id="formStep4">
+                <h2 class="step-title">Contact Information</h2>
+                <p>Provide your contact details so interested buyers can reach you.</p>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sellerName">Full Name *</label>
+                        <input type="text" id="sellerName" class="form-control" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sellerEmail">Email Address *</label>
+                        <input type="email" id="sellerEmail" class="form-control" placeholder="your@email.com" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sellerPhone">Phone Number *</label>
+                        <input type="tel" id="sellerPhone" class="form-control" placeholder="(123) 456-7890" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sellerCity">City *</label>
+                        <input type="text" id="sellerCity" class="form-control" placeholder="Your city" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="sellerState">State *</label>
+                    <select id="sellerState" class="form-control" required>
+                        <option value="">Select State</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="HI">Hawaii</option>
+                        <option value="ID">Idaho</option>
+                        <option value="IL">Illinois</option>
+                        <option value="IN">Indiana</option>
+                        <option value="IA">Iowa</option>
+                        <option value="KS">Kansas</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="ME">Maine</option>
+                        <option value="MD">Maryland</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MN">Minnesota</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NE">Nebraska</option>
+                        <option value="NV">Nevada</option>
+                        <option value="NH">New Hampshire</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NY">New York</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="ND">North Dakota</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                    </select>
+                </div>
+
+                <div class="form-navigation">
+                    <button type="button" class="btn btn-secondary" id="backToStep3"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button type="button" class="btn btn-primary" id="nextToStep5">Next <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 5: Preview -->
+            <div class="form-step" id="formStep5">
+                <h2 class="step-title">Preview Your Listing</h2>
+                <p>Review your car listing before publishing. Make sure all information is correct.</p>
+                
+                <div class="preview-section">
+                    <div class="preview-content">
+                        <div class="preview-image" id="previewImage">
+                            <i class="fas fa-car" style="font-size: 4rem; color: #999; display: flex; align-items: center; justify-content: center; height: 100%;"></i>
+                        </div>
+                        <div class="preview-details">
+                            <h3 id="previewTitle">2021 Honda Civic</h3>
+                            <div class="price" id="previewPrice">$22,500</div>
+                            <div class="preview-specs">
+                                <div><i class="fas fa-calendar-alt"></i> <span id="previewYear">2021</span></div>
+                                <div><i class="fas fa-tachometer-alt"></i> <span id="previewMileage">15,000 mi</span></div>
+                                <div><i class="fas fa-gas-pump"></i> <span id="previewFuel">Gasoline</span></div>
+                                <div><i class="fas fa-cog"></i> <span id="previewTransmission">Automatic</span></div>
+                                <div><i class="fas fa-palette"></i> <span id="previewColor">Blue</span></div>
+                                <div><i class="fas fa-map-marker-alt"></i> <span id="previewLocation">New York, NY</span></div>
+                            </div>
+                            <p id="previewDescription">Well-maintained Honda Civic with low mileage. Single owner, no accidents.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-navigation">
+                    <button type="button" class="btn btn-secondary" id="backToStep4"><i class="fas fa-arrow-left"></i> Back</button>
+                    <button type="button" class="btn btn-accent" id="publishListing"><i class="fas fa-check"></i> Publish Listing</button>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="form-step" id="successStep">
+                <div class="success-message">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>Your Car Listing Has Been Published!</h2>
+                    <p>Your car is now visible to thousands of potential buyers on AutoMarket.</p>
+                    <div class="form-navigation">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='browse.html'">Browse Cars</button>
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='index.html'">Back to Home</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AutoMarket</h3>
+                    <p>Your trusted platform for buying and selling vehicles. Find the perfect car or connect with buyers for your vehicle.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="browse.html">Browse Cars</a></li>
+                        <li><a href="sell.html">Sell Your Car</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Auto Street, Car City</li>
+                        <li><i class="fas fa-phone"></i> (123) 456-7890</li>
+                        <li><i class="fas fa-envelope"></i> info@automarket.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 AutoMarket. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const progressBar = document.getElementById('progressBar');
+        const formSteps = document.querySelectorAll('.form-step');
+        const progressSteps = document.querySelectorAll('.progress-step');
+        
+        // Navigation buttons
+        const nextToStep2 = document.getElementById('nextToStep2');
+        const nextToStep3 = document.getElementById('nextToStep3');
+        const nextToStep4 = document.getElementById('nextToStep4');
+        const nextToStep5 = document.getElementById('nextToStep5');
+        const backToStep1 = document.getElementById('backToStep1');
+        const backToStep2 = document.getElementById('backToStep2');
+        const backToStep3 = document.getElementById('backToStep3');
+        const backToStep4 = document.getElementById('backToStep4');
+        const publishListing = document.getElementById('publishListing');
+        
+        // Form elements
+        const carYear = document.getElementById('carYear');
+        const photoUploadArea = document.getElementById('photoUploadArea');
+        const carPhotos = document.getElementById('carPhotos');
+        const photoPreview = document.getElementById('photoPreview');
+        
+        // Preview elements
+        const previewTitle = document.getElementById('previewTitle');
+        const previewPrice = document.getElementById('previewPrice');
+        const previewYear = document.getElementById('previewYear');
+        const previewMileage = document.getElementById('previewMileage');
+        const previewFuel = document.getElementById('previewFuel');
+        const previewTransmission = document.getElementById('previewTransmission');
+        const previewColor = document.getElementById('previewColor');
+        const previewLocation = document.getElementById('previewLocation');
+        const previewDescription = document.getElementById('previewDescription');
+        const previewImage = document.getElementById('previewImage');
+
+        // State
+        let currentStep = 1;
+        let uploadedPhotos = [];
+
+        // Initialize the page
+        function init() {
+            populateYearDropdown();
+            setupEventListeners();
+            updateProgressBar();
+        }
+
+        // Populate year dropdown
+        function populateYearDropdown() {
+            const currentYear = new Date().getFullYear();
+            for (let year = currentYear; year >= 1990; year--) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                carYear.appendChild(option);
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Navigation
+            nextToStep2.addEventListener('click', () => navigateToStep(2));
+            nextToStep3.addEventListener('click', () => navigateToStep(3));
+            nextToStep4.addEventListener('click', () => navigateToStep(4));
+            nextToStep5.addEventListener('click', () => {
+                updatePreview();
+                navigateToStep(5);
+            });
+            backToStep1.addEventListener('click', () => navigateToStep(1));
+            backToStep2.addEventListener('click', () => navigateToStep(2));
+            backToStep3.addEventListener('click', () => navigateToStep(3));
+            backToStep4.addEventListener('click', () => navigateToStep(4));
+            
+            // Photo upload
+            photoUploadArea.addEventListener('click', () => carPhotos.click());
+            photoUploadArea.addEventListener('dragover', handleDragOver);
+            photoUploadArea.addEventListener('drop', handleFileDrop);
+            carPhotos.addEventListener('change', handleFileSelect);
+            
+            // Publish listing
+            publishListing.addEventListener('click', publishCarListing);
+        }
+
+        // Navigate to specific step
+        function navigateToStep(step) {
+            // Hide all steps
+            formSteps.forEach(formStep => {
+                formStep.classList.remove('active');
+            });
+            
+            // Show target step
+            document.getElementById(`formStep${step}`).classList.add('active');
+            
+            // Update current step
+            currentStep = step;
+            
+            // Update progress bar
+            updateProgressBar();
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            // Update progress line
+            const progressLine = document.querySelector('.progress-bar::after');
+            if (progressLine) {
+                const progressPercentage = ((currentStep - 1) / 4) * 100;
+                document.querySelector('.progress-bar').style.setProperty('--progress-width', `${progressPercentage}%`);
+            }
+            
+            // Update step indicators
+            progressSteps.forEach((step, index) => {
+                if (index + 1 < currentStep) {
+                    step.classList.add('completed');
+                    step.classList.remove('active');
+                } else if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            });
+        }
+
+        // Handle drag over event
+        function handleDragOver(e) {
+            e.preventDefault();
+            photoUploadArea.style.borderColor = var(--secondary);
+            photoUploadArea.style.backgroundColor = 'rgba(52, 152, 219, 0.1)';
+        }
+
+        // Handle file drop
+        function handleFileDrop(e) {
+            e.preventDefault();
+            photoUploadArea.style.borderColor = '#ddd';
+            photoUploadArea.style.backgroundColor = 'transparent';
+            
+            const files = e.dataTransfer.files;
+            handleFiles(files);
+        }
+
+        // Handle file select
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            handleFiles(files);
+        }
+
+        // Handle uploaded files
+        function handleFiles(files) {
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                
+                // Check if file is an image
+                if (!file.type.match('image.*')) {
+                    alert('Please upload only image files.');
+                    continue;
+                }
+                
+                // Check file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('File size must be less than 5MB.');
+                    continue;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    // Add to uploaded photos array
+                    uploadedPhotos.push({
+                        name: file.name,
+                        url: e.target.result
+                    });
+                    
+                    // Update photo preview
+                    updatePhotoPreview();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Update photo preview
+        function updatePhotoPreview() {
+            photoPreview.innerHTML = '';
+            
+            if (uploadedPhotos.length === 0) {
+                photoPreview.innerHTML = '<p>No photos uploaded yet.</p>';
+                return;
+            }
+            
+            uploadedPhotos.forEach((photo, index) => {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                
+                const img = document.createElement('img');
+                img.src = photo.url;
+                img.alt = `Car photo ${index + 1}`;
+                
+                const removeBtn = document.createElement('button');
+                removeBtn.className = 'remove-photo';
+                removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+                removeBtn.addEventListener('click', () => {
+                    uploadedPhotos.splice(index, 1);
+                    updatePhotoPreview();
+                });
+                
+                previewItem.appendChild(img);
+                previewItem.appendChild(removeBtn);
+                photoPreview.appendChild(previewItem);
+            });
+        }
+
+        // Update preview section
+        function updatePreview() {
+            // Get form values
+            const make = document.getElementById('carMake').value;
+            const model = document.getElementById('carModel').value;
+            const year = document.getElementById('carYear').value;
+            const price = document.getElementById('carPrice').value;
+            const mileage = document.getElementById('carMileage').value;
+            const fuel = document.getElementById('carFuel').value;
+            const transmission = document.getElementById('carTransmission').value;
+            const color = document.getElementById('carColor').value;
+            const description = document.getElementById('carDescription').value;
+            const city = document.getElementById('sellerCity').value;
+            const state = document.getElementById('sellerState').value;
+            
+            // Update preview elements
+            previewTitle.textContent = `${year} ${make} ${model}`;
+            previewPrice.textContent = `$${parseInt(price).toLocaleString()}`;
+            previewYear.textContent = year;
+            previewMileage.textContent = `${parseInt(mileage).toLocaleString()} mi`;
+            previewFuel.textContent = fuel;
+            previewTransmission.textContent = transmission;
+            previewColor.textContent = color;
+            previewLocation.textContent = `${city}, ${state}`;
+            previewDescription.textContent = description;
+            
+            // Update preview image
+            if (uploadedPhotos.length > 0) {
+                previewImage.innerHTML = '';
+                const img = document.createElement('img');
+                img.src = uploadedPhotos[0].url;
+                img.alt = `${year} ${make} ${model}`;
+                previewImage.appendChild(img);
+            }
+        }
+
+        // Publish car listing
+        function publishCarListing() {
+            // In a real application, you would send the data to a server
+            // For this demo, we'll just show the success message
+            
+            // Show success step
+            formSteps.forEach(formStep => {
+                formStep.classList.remove('active');
+            });
+            document.getElementById('successStep').classList.add('active');
+            
+            // Reset progress bar
+            currentStep = 1;
+            updateProgressBar();
+            
+            // You could also save the listing to localStorage or send to a server here
+            console.log('Car listing published:', {
+                make: document.getElementById('carMake').value,
+                model: document.getElementById('carModel').value,
+                year: document.getElementById('carYear').value,
+                price: document.getElementById('carPrice').value,
+                // ... other form values
+            });
+        }
+
+        // Initialize the page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
