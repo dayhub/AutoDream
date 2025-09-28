@@ -185,18 +185,6 @@
             z-index: 1;
         }
 
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 0;
-            width: 0%;
-            height: 4px;
-            background: var(--secondary);
-            z-index: 2;
-            transition: width 0.5s ease;
-        }
-
         .progress-step {
             display: flex;
             flex-direction: column;
@@ -215,6 +203,8 @@
             font-weight: bold;
             margin-bottom: 0.5rem;
             transition: all 0.3s;
+            position: relative;
+            z-index: 4;
         }
 
         .step-label {
@@ -230,6 +220,17 @@
         .progress-step.completed .step-number {
             background: var(--success);
             color: white;
+        }
+
+        /* Progress Line */
+        .progress-line {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            height: 4px;
+            background: var(--secondary);
+            z-index: 2;
+            transition: width 0.5s ease;
         }
 
         /* Form Steps */
@@ -330,6 +331,7 @@
             border-radius: 4px;
             overflow: hidden;
             height: 120px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .preview-item img {
@@ -614,6 +616,7 @@
         <div class="sell-form-container">
             <!-- Progress Bar -->
             <div class="progress-bar" id="progressBar">
+                <div class="progress-line" id="progressLine"></div>
                 <div class="progress-step active" id="step1">
                     <div class="step-number">1</div>
                     <div class="step-label">Car Details</div>
@@ -913,6 +916,10 @@
                                 <div><i class="fas fa-map-marker-alt"></i> <span id="previewLocation">New York, NY</span></div>
                             </div>
                             <p id="previewDescription">Well-maintained Honda Civic with low mileage. Single owner, no accidents.</p>
+                            <div class="preview-features" id="previewFeatures">
+                                <h4 style="margin: 1rem 0 0.5rem;">Features:</h4>
+                                <div id="featuresList"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -976,6 +983,7 @@
     <script>
         // DOM Elements
         const progressBar = document.getElementById('progressBar');
+        const progressLine = document.getElementById('progressLine');
         const formSteps = document.querySelectorAll('.form-step');
         const progressSteps = document.querySelectorAll('.progress-step');
         
@@ -1007,6 +1015,7 @@
         const previewLocation = document.getElementById('previewLocation');
         const previewDescription = document.getElementById('previewDescription');
         const previewImage = document.getElementById('previewImage');
+        const featuresList = document.getElementById('featuresList');
 
         // State
         let currentStep = 1;
@@ -1057,6 +1066,11 @@
 
         // Navigate to specific step
         function navigateToStep(step) {
+            // Validate current step before proceeding
+            if (step > currentStep && !validateCurrentStep()) {
+                return;
+            }
+            
             // Hide all steps
             formSteps.forEach(formStep => {
                 formStep.classList.remove('active');
@@ -1072,14 +1086,26 @@
             updateProgressBar();
         }
 
+        // Validate current step
+        function validateCurrentStep() {
+            if (currentStep === 1) {
+                const requiredFields = document.querySelectorAll('#formStep1 [required]');
+                for (let field of requiredFields) {
+                    if (!field.value.trim()) {
+                        alert(`Please fill in the ${field.labels[0].textContent} field.`);
+                        field.focus();
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         // Update progress bar
         function updateProgressBar() {
-            // Update progress line
-            const progressLine = document.querySelector('.progress-bar::after');
-            if (progressLine) {
-                const progressPercentage = ((currentStep - 1) / 4) * 100;
-                document.querySelector('.progress-bar').style.setProperty('--progress-width', `${progressPercentage}%`);
-            }
+            // Calculate progress percentage
+            const progressPercentage = ((currentStep - 1) / 4) * 100;
+            progressLine.style.width = `${progressPercentage}%`;
             
             // Update step indicators
             progressSteps.forEach((step, index) => {
@@ -1098,7 +1124,7 @@
         // Handle drag over event
         function handleDragOver(e) {
             e.preventDefault();
-            photoUploadArea.style.borderColor = var(--secondary);
+            photoUploadArea.style.borderColor = '#3498db';
             photoUploadArea.style.backgroundColor = 'rgba(52, 152, 219, 0.1)';
         }
 
@@ -1157,7 +1183,7 @@
             photoPreview.innerHTML = '';
             
             if (uploadedPhotos.length === 0) {
-                photoPreview.innerHTML = '<p>No photos uploaded yet.</p>';
+                photoPreview.innerHTML = '<p style="text-align: center; grid-column: 1 / -1;">No photos uploaded yet.</p>';
                 return;
             }
             
@@ -1198,6 +1224,9 @@
             const city = document.getElementById('sellerCity').value;
             const state = document.getElementById('sellerState').value;
             
+            // Get selected features
+            const selectedFeatures = getSelectedFeatures();
+            
             // Update preview elements
             previewTitle.textContent = `${year} ${make} ${model}`;
             previewPrice.textContent = `$${parseInt(price).toLocaleString()}`;
@@ -1209,6 +1238,24 @@
             previewLocation.textContent = `${city}, ${state}`;
             previewDescription.textContent = description;
             
+            // Update features list
+            featuresList.innerHTML = '';
+            if (selectedFeatures.length > 0) {
+                selectedFeatures.forEach(feature => {
+                    const featureItem = document.createElement('span');
+                    featureItem.textContent = feature;
+                    featureItem.style.display = 'inline-block';
+                    featureItem.style.background = '#e8f4fc';
+                    featureItem.style.padding = '0.3rem 0.6rem';
+                    featureItem.style.borderRadius = '4px';
+                    featureItem.style.margin = '0.2rem';
+                    featureItem.style.fontSize = '0.9rem';
+                    featuresList.appendChild(featureItem);
+                });
+            } else {
+                featuresList.innerHTML = '<p>No features selected</p>';
+            }
+            
             // Update preview image
             if (uploadedPhotos.length > 0) {
                 previewImage.innerHTML = '';
@@ -1217,6 +1264,16 @@
                 img.alt = `${year} ${make} ${model}`;
                 previewImage.appendChild(img);
             }
+        }
+
+        // Get selected features
+        function getSelectedFeatures() {
+            const featureCheckboxes = document.querySelectorAll('.feature-checkbox input:checked');
+            const selectedFeatures = [];
+            featureCheckboxes.forEach(checkbox => {
+                selectedFeatures.push(checkbox.value);
+            });
+            return selectedFeatures;
         }
 
         // Publish car listing
@@ -1240,7 +1297,18 @@
                 model: document.getElementById('carModel').value,
                 year: document.getElementById('carYear').value,
                 price: document.getElementById('carPrice').value,
-                // ... other form values
+                mileage: document.getElementById('carMileage').value,
+                fuel: document.getElementById('carFuel').value,
+                transmission: document.getElementById('carTransmission').value,
+                color: document.getElementById('carColor').value,
+                description: document.getElementById('carDescription').value,
+                sellerName: document.getElementById('sellerName').value,
+                sellerEmail: document.getElementById('sellerEmail').value,
+                sellerPhone: document.getElementById('sellerPhone').value,
+                sellerCity: document.getElementById('sellerCity').value,
+                sellerState: document.getElementById('sellerState').value,
+                features: getSelectedFeatures(),
+                photos: uploadedPhotos.length
             });
         }
 
