@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - AutoMarket</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #2ecc71;
+            --warning: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+        }
+
+        nav ul li a:hover {
+            color: var(--secondary);
+        }
+
+        .auth-buttons button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+            margin-left: 10px;
+        }
+
+        .auth-buttons button:hover {
+            background: #2980b9;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1486496572940-2bb2341fdbdf?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--dark);
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title p {
+            color: #7f8c8d;
+        }
+
+        /* About Content */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .about-text {
+            padding-right: 1rem;
+        }
+
+        .about-text h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-image {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Values Section */
+        .values-section {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .value-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .value-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--secondary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .value-card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        /* Team Section */
+        .team-section {
+            margin-bottom: 3rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .member-image {
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .member-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .team-member:hover .member-image img {
+            transform: scale(1.05);
+        }
+
+        .member-info {
+            padding: 1.5rem;
+        }
+
+        .member-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .member-info .position {
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #34495e;
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            nav ul {
+                margin: 1rem 0;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .about-text {
+                padding-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-car"></i>
+                    Auto<span>Market</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="browse.html">Browse Cars</a></li>
+                        <li><a href="sell.html">Sell Your Car</a></li>
+                        <li><a href="about.html" class="active">About</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <!-- Login/Register buttons removed - all features accessible without authentication -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>About AutoMarket</h1>
+            <p>Learn more about our mission to revolutionize car buying and selling</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <!-- About Content -->
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Our Story</h3>
+                <p>Founded in 2018, AutoMarket began with a simple vision: to create a better way for people to buy and sell cars. We saw that the traditional car marketplace was filled with complexities, hidden fees, and uncertainty for both buyers and sellers.</p>
+                
+                <p>Our team of automotive enthusiasts and technology experts came together to build a platform that would simplify the process, provide transparency, and create a trusted community for car transactions.</p>
+                
+                <h3>Our Mission</h3>
+                <p>At AutoMarket, we're committed to making car buying and selling a seamless, enjoyable experience. We believe that everyone deserves access to a reliable marketplace where they can find their perfect vehicle or connect with the right buyer for their car.</p>
+                
+                <p>Through innovative technology, comprehensive vehicle listings, and a user-friendly platform, we're transforming how people think about car transactions.</p>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="AutoMarket Team">
+            </div>
+        </div>
+
+        <!-- Values Section -->
+        <div class="values-section">
+            <div class="section-title">
+                <h2>Our Values</h2>
+                <p>The principles that guide everything we do</p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Trust & Safety</h3>
+                    <p>We prioritize the security of our users and their transactions, implementing robust verification processes and secure payment options.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <h3>Transparency</h3>
+                    <p>No hidden fees, no surprises. We believe in complete transparency throughout the buying and selling process.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Community</h3>
+                    <p>We're building more than a marketplace - we're creating a community of car enthusiasts who help each other make better decisions.</p>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Innovation</h3>
+                    <p>We continuously improve our platform with new features and technologies to enhance the user experience.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Team Section -->
+        <div class="team-section">
+            <div class="section-title">
+                <h2>Meet Our Team</h2>
+                <p>The passionate people behind AutoMarket</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="John Smith">
+                    </div>
+                    <div class="member-info">
+                        <h3>John Smith</h3>
+                        <div class="position">CEO & Founder</div>
+                        <p>Automotive industry veteran with 15+ years of experience.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Sarah Johnson">
+                    </div>
+                    <div class="member-info">
+                        <h3>Sarah Johnson</h3>
+                        <div class="position">CTO</div>
+                        <p>Technology expert passionate about creating seamless user experiences.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Michael Chen">
+                    </div>
+                    <div class="member-info">
+                        <h3>Michael Chen</h3>
+                        <div class="position">Head of Operations</div>
+                        <p>Ensures our platform runs smoothly and efficiently every day.</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <div class="member-image">
+                        <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Emily Rodriguez">
+                    </div>
+                    <div class="member-info">
+                        <h3>Emily Rodriguez</h3>
+                        <div class="position">Customer Experience Director</div>
+                        <p>Dedicated to making every user's journey exceptional.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <div class="section-title" style="color: white;">
+                <h2>By The Numbers</h2>
+                <p>Our impact in the automotive marketplace</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <h3>50,000+</h3>
+                    <p>Cars Sold</p>
+                </div>
+                <div class="stat-item">
+                    <h3>100,000+</h3>
+                    <p>Happy Customers</p>
+                </div>
+                <div class="stat-item">
+                    <h3>$500M+</h3>
+                    <p>In Transactions</p>
+                </div>
+                <div class="stat-item">
+                    <h3>45+</h3>
+                    <p>States Served</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>AutoMarket</h3>
+                    <p>Your trusted platform for buying and selling vehicles. Find the perfect car or connect with buyers for your vehicle.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="browse.html">Browse Cars</a></li>
+                        <li><a href="sell.html">Sell Your Car</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Auto Street, Car City</li>
+                        <li><i class="fas fa-phone"></i> (123) 456-7890</li>
+                        <li><i class="fas fa-envelope"></i> info@automarket.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 AutoMarket. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
