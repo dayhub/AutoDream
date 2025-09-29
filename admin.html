@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoMarket - List Your Car</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .form-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-section:last-of-type {
+            border-bottom: none;
+        }
+        
+        .section-title {
+            font-size: 1.4rem;
+            color: #2a5298;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eaeaea;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+        
+        .form-group {
+            flex: 1 0 300px;
+            margin: 0 10px 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #2a5298;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(42, 82, 152, 0.2);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+        }
+        
+        .price-input {
+            position: relative;
+        }
+        
+        .price-input span {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+        
+        .price-input input {
+            padding-left: 40px;
+        }
+        
+        .image-upload {
+            border: 2px dashed #ddd;
+            border-radius: 4px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: border 0.3s;
+        }
+        
+        .image-upload:hover {
+            border-color: #2a5298;
+        }
+        
+        .image-upload i {
+            font-size: 2.5rem;
+            color: #2a5298;
+            margin-bottom: 10px;
+        }
+        
+        .image-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .preview-item {
+            width: 120px;
+            height: 90px;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-item .remove {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: block;
+            margin: 30px auto 0;
+            min-width: 200px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(42, 82, 152, 0.4);
+        }
+        
+        .required::after {
+            content: " *";
+            color: #e74c3c;
+        }
+        
+        .help-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-group {
+                flex: 1 0 100%;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sell Your Car on AutoMarket</h1>
+            <p>Fill out the form below to list your vehicle for sale</p>
+        </header>
+        
+        <div class="form-container">
+            <form id="car-listing-form">
+                <!-- Vehicle Information Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Vehicle Information</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="make" class="required">Make</label>
+                            <select id="make" name="make" required>
+                                <option value="">Select Make</option>
+                                <option value="toyota">Toyota</option>
+                                <option value="honda">Honda</option>
+                                <option value="ford">Ford</option>
+                                <option value="bmw">BMW</option>
+                                <option value="mercedes">Mercedes-Benz</option>
+                                <option value="audi">Audi</option>
+                                <option value="hyundai">Hyundai</option>
+                                <option value="kia">Kia</option>
+                                <option value="nissan">Nissan</option>
+                                <option value="chevrolet">Chevrolet</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="model" class="required">Model</label>
+                            <input type="text" id="model" name="model" required placeholder="e.g., Camry, Civic, F-150">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="year" class="required">Year</label>
+                            <select id="year" name="year" required>
+                                <option value="">Select Year</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="condition" class="required">Condition</label>
+                            <select id="condition" name="condition" required>
+                                <option value="">Select Condition</option>
+                                <option value="excellent">Excellent</option>
+                                <option value="good">Good</option>
+                                <option value="fair">Fair</option>
+                                <option value="needs-work">Needs Work</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="mileage" class="required">Mileage</label>
+                            <input type="number" id="mileage" name="mileage" required placeholder="e.g., 45000">
+                            <p class="help-text">Enter the current mileage on the odometer</p>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="transmission" class="required">Transmission</label>
+                            <select id="transmission" name="transmission" required>
+                                <option value="">Select Transmission</option>
+                                <option value="automatic">Automatic</option>
+                                <option value="manual">Manual</option>
+                                <option value="cvt">CVT</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="fuel-type" class="required">Fuel Type</label>
+                            <select id="fuel-type" name="fuel-type" required>
+                                <option value="">Select Fuel Type</option>
+                                <option value="gasoline">Gasoline</option>
+                                <option value="diesel">Diesel</option>
+                                <option value="hybrid">Hybrid</option>
+                                <option value="electric">Electric</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="color" class="required">Color</label>
+                            <input type="text" id="color" name="color" required placeholder="e.g., Blue, Red, Black">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pricing Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Pricing</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="price" class="required">Asking Price</label>
+                            <div class="price-input">
+                                <span>$</span>
+                                <input type="number" id="price" name="price" required placeholder="e.g., 15000">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="negotiable">Price Negotiable</label>
+                            <select id="negotiable" name="negotiable">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Features & Description Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Features & Description</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Features</label>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="feature-ac" name="features" value="ac">
+                                <label for="feature-ac">Air Conditioning</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="feature-power-windows" name="features" value="power-windows">
+                                <label for="feature-power-windows">Power Windows</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="feature-power-locks" name="features" value="power-locks">
+                                <label for="feature-power-locks">Power Locks</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="feature-cruise" name="features" value="cruise">
+                                <label for="feature-cruise">Cruise Control</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="feature-bluetooth" name="features" value="bluetooth">
+                                <label for="feature-bluetooth">Bluetooth</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="feature-backup-camera" name="features" value="backup-camera">
+                                <label for="feature-backup-camera">Backup Camera</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="feature-navigation" name="features" value="navigation">
+                                <label for="feature-navigation">Navigation System</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="feature-leather" name="features" value="leather">
+                                <label for="feature-leather">Leather Seats</label>
+                            </div>
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="feature-sunroof" name="features" value="sunroof">
+                                <label for="feature-sunroof">Sunroof/Moonroof</label>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description" class="required">Vehicle Description</label>
+                            <textarea id="description" name="description" required placeholder="Describe your vehicle, its condition, maintenance history, and any other relevant details..."></textarea>
+                            <p class="help-text">Be detailed to attract more buyers</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Photos Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Photos</h2>
+                    <div class="form-group">
+                        <label class="required">Upload Photos</label>
+                        <div class="image-upload" id="image-upload-area">
+                            <i>📷</i>
+                            <p>Click to upload or drag and drop</p>
+                            <p class="help-text">Upload at least 3 photos (max 10). Include exterior, interior, and engine shots.</p>
+                        </div>
+                        <input type="file" id="image-input" multiple accept="image/*" style="display: none;">
+                        <div class="image-preview" id="image-preview"></div>
+                    </div>
+                </div>
+                
+                <!-- Contact Information Section -->
+                <div class="form-section">
+                    <h2 class="section-title">Contact Information</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name" class="required">Your Name</label>
+                            <input type="text" id="name" name="name" required placeholder="e.g., John Smith">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email" class="required">Email Address</label>
+                            <input type="email" id="email" name="email" required placeholder="e.g., john@example.com">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone" class="required">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" required placeholder="e.g., (555) 123-4567">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="location" class="required">Location</label>
+                            <input type="text" id="location" name="location" required placeholder="e.g., City, State">
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">List My Car</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Populate year dropdown
+        const yearSelect = document.getElementById('year');
+        const currentYear = new Date().getFullYear();
+        for (let year = currentYear; year >= 1980; year--) {
+            const option = document.createElement('option');
+            option.value = year;
+            option.textContent = year;
+            yearSelect.appendChild(option);
+        }
+        
+        // Image upload functionality
+        const imageUploadArea = document.getElementById('image-upload-area');
+        const imageInput = document.getElementById('image-input');
+        const imagePreview = document.getElementById('image-preview');
+        
+        imageUploadArea.addEventListener('click', () => {
+            imageInput.click();
+        });
+        
+        imageUploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            imageUploadArea.style.borderColor = '#2a5298';
+            imageUploadArea.style.backgroundColor = '#f0f4ff';
+        });
+        
+        imageUploadArea.addEventListener('dragleave', () => {
+            imageUploadArea.style.borderColor = '#ddd';
+            imageUploadArea.style.backgroundColor = 'white';
+        });
+        
+        imageUploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            imageUploadArea.style.borderColor = '#ddd';
+            imageUploadArea.style.backgroundColor = 'white';
+            
+            if (e.dataTransfer.files.length > 0) {
+                handleFiles(e.dataTransfer.files);
+            }
+        });
+        
+        imageInput.addEventListener('change', () => {
+            if (imageInput.files.length > 0) {
+                handleFiles(imageInput.files);
+            }
+        });
+        
+        function handleFiles(files) {
+            const maxFiles = 10;
+            const currentFileCount = imagePreview.children.length;
+            
+            if (currentFileCount + files.length > maxFiles) {
+                alert(`You can only upload up to ${maxFiles} images. You already have ${currentFileCount} images.`);
+                return;
+            }
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                
+                if (!file.type.match('image.*')) {
+                    continue;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        const previewItem = document.createElement('div');
+                        previewItem.className = 'preview-item';
+                        
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.title = theFile.name;
+                        
+                        const removeBtn = document.createElement('div');
+                        removeBtn.className = 'remove';
+                        removeBtn.innerHTML = '×';
+                        removeBtn.addEventListener('click', function() {
+                            imagePreview.removeChild(previewItem);
+                        });
+                        
+                        previewItem.appendChild(img);
+                        previewItem.appendChild(removeBtn);
+                        imagePreview.appendChild(previewItem);
+                    };
+                })(file);
+                
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Form submission
+        document.getElementById('car-listing-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Basic validation
+            const requiredFields = this.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#e74c3c';
+                } else {
+                    field.style.borderColor = '#ddd';
+                }
+            });
+            
+            // Check if at least 3 images are uploaded
+            const imageCount = imagePreview.children.length;
+            if (imageCount < 3) {
+                isValid = false;
+                alert('Please upload at least 3 images of your vehicle.');
+            }
+            
+            if (isValid) {
+                // In a real application, you would send the form data to a server here
+                alert('Your car listing has been submitted successfully!');
+                this.reset();
+                imagePreview.innerHTML = '';
+            } else {
+                alert('Please fill in all required fields.');
+            }
+        });
+    </script>
+</body>
+</html>
